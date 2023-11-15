@@ -1,9 +1,9 @@
-package lk.pawpal.backend.model;
+package lk.pawpal.backend.request;
 
 import lombok.Data;
 
 @Data
-public class LoginCredentials {
+public class LoginRequest {
     private String email;
     private String password;
 
