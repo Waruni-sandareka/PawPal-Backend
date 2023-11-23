@@ -28,6 +28,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "pet_id")
     private Integer petId;
     private String name;
     private String type;
