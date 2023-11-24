@@ -45,28 +45,32 @@ public class AppointmentService {
         DayCareAppointmentResponse response = new DayCareAppointmentResponse();
 
         try {
+
+
+            DayCareAppointment appointment = new DayCareAppointment(dayCareAppointment.getAppointmentType(),
+                                                                    dayCareAppointment.getAppointmentDate(),
+                                                                    dayCareAppointment.getAppointmentTime(),
+                                                                    dayCareAppointment.getPet(),
+                                                                    dayCareAppointment.isVaccinationConfirmation());
+
             // Set the dayCareAppointment in each PetSupply to establish the relationship
             List<PetSupply> petSupplies = dayCareAppointment.getPetSupplies();
+
             if (petSupplies != null) {
                 for (PetSupply petSupply : petSupplies) {
-                    petSupply.setDayCareAppointment(dayCareAppointment);
+                    PetSupply ps = new PetSupply(petSupply.getSupplyName());
+                    appointment.getPetSupplies().add(ps);
                 }
             }
-//
-//            System.out.println(petSupplies);
-//
-//            // Set the PetSupplies in the DayCareAppointment
-//            dayCareAppointment.setPetSupplies(petSupplies);
-//
-//            System.out.println(dayCareAppointment);
 
             // Save the DayCareAppointment along with its associated PetSupplies
-            DayCareAppointment savedDayCareAppointment = dayCareAppointmentRepository.save(dayCareAppointment);
+            DayCareAppointment savedDayCareAppointment = dayCareAppointmentRepository.save(appointment);
 
             response.setCode(1);
             response.setMessage("Successfully Booked Day Care Appointment");
             response.setDayCareAppointment(savedDayCareAppointment);
             return response;
+
         } catch (Exception e) {
             System.out.println(e.toString());
             response.setCode(-1);

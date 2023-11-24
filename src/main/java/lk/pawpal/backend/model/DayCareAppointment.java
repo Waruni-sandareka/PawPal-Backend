@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,15 +17,15 @@ public class DayCareAppointment extends Appointment{
 
     }
 
-    public DayCareAppointment(String appointmentType, Date appointmentDate, Time appointmentTime, Pet pet, boolean vaccinationConfirmation, List<PetSupply> petSupplies) {
+    public DayCareAppointment(String appointmentType, Date appointmentDate, Time appointmentTime, Pet pet, boolean vaccinationConfirmation) {
         super(appointmentType, appointmentDate, appointmentTime, pet);
         this.vaccinationConfirmation = vaccinationConfirmation;
-        this.petSupplies = petSupplies;
     }
 
     private boolean vaccinationConfirmation;
 
-    @OneToMany(mappedBy = "dayCareAppointment")
-    private List<PetSupply> petSupplies;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "daycare_appointment_id", referencedColumnName = "appointment_id")
+    List<PetSupply> petSupplies = new ArrayList<>();
 
 }
