@@ -46,7 +46,6 @@ public class AppointmentService {
 
         try {
 
-
             DayCareAppointment appointment = new DayCareAppointment(dayCareAppointment.getAppointmentType(),
                                                                     dayCareAppointment.getAppointmentDate(),
                                                                     dayCareAppointment.getAppointmentTime(),
@@ -63,7 +62,6 @@ public class AppointmentService {
                 }
             }
 
-            // Save the DayCareAppointment along with its associated PetSupplies
             DayCareAppointment savedDayCareAppointment = dayCareAppointmentRepository.save(appointment);
 
             response.setCode(1);
