@@ -25,4 +25,10 @@ public class PetController {
         return petService.getAllPetsByUserId(userId);
     }
 
+    @GetMapping("/getAllPetList")
+    public Iterable<Pet> getAllPetList(){
+
+        return petService.getAllPetList();
+    }
+
 }

@@ -1,11 +1,14 @@
 package lk.pawpal.backend.service;
 
 import lk.pawpal.backend.model.Pet;
+import lk.pawpal.backend.model.User;
+import lk.pawpal.backend.repository.AppointmentRepository;
 import lk.pawpal.backend.repository.PetRepository;
 import lk.pawpal.backend.response.AddPetResponse;
 import lk.pawpal.backend.response.GetPetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,13 +48,11 @@ public class PetService {
 
             if(pets.size() > 0) {
                 response.setMessage("Pets Details get Successfully !");
-                response.setCode(1);
-                response.setPets(pets);
             } else {
                 response.setMessage("Not added any pets yet !");
-                response.setCode(1);
-                response.setPets(pets);
             }
+            response.setCode(1);
+            response.setPets(pets);
         } catch (Exception e) {
             response.setMessage("Error occurred!");
             response.setCode(-1);
@@ -60,4 +61,19 @@ public class PetService {
 
     }
 
+    @Autowired
+    AppointmentRepository appointmentRepository;
+    @Transactional
+    public void deletePetsByUser(User user) {
+        List<Pet> pets = petRepository.findByUser(user);
+        // Delete appointments associated with each pet
+        for (Pet pet : pets) {
+            appointmentRepository.deleteByPet(pet);
+        }
+        petRepository.deleteAll(pets);
+    }
+
+    public Iterable<Pet> getAllPetList() {
+        return petRepository.findAll();
+    }
 }
